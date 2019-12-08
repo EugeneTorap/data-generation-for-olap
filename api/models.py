@@ -1,49 +1,31 @@
 from django.db import models
 
 
-class City(models.Model):
-    name = models.TextField()
-    population = models.IntegerField()
+class Stop(models.Model):
+    country = models.TextField()
+    city = models.TextField()
 
     class Meta:
-        db_table = 'city'
+        db_table = 'stop'
 
 
-class Car(models.Model):
-    number = models.TextField()
-    carrying_capacity = models.FloatField()
-
-    class Meta:
-        db_table = 'car'
-
-
-class Driver(models.Model):
-    first_name = models.TextField()
-    last_name = models.TextField()
-    age = models.IntegerField()
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='drivers')
+class Transport(models.Model):
+    fuel = models.FloatField()
+    year = models.IntegerField()
+    transport_type = models.TextField()
 
     class Meta:
-        db_table = 'driver'
+        db_table = 'transport'
 
 
-class Client(models.Model):
-    name = models.TextField()
-
-    class Meta:
-        db_table = 'client'
-
-
-class Cargo(models.Model):
-    name = models.TextField()
-    weight = models.FloatField()
-    price = models.IntegerField()
+class Ticket(models.Model):
     date = models.DateTimeField()
+    seat = models.IntegerField()
+    cost = models.FloatField()
 
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='transportation_list')
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='transportation_list')
-    start_city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='transportation_list_start')
-    finish_city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='transportation_list_finish')
+    transport = models.ForeignKey(Transport, on_delete=models.CASCADE, related_name='tickets')
+    start_stop = models.ForeignKey(Stop, on_delete=models.CASCADE, related_name='start_tickets')
+    finish_stop = models.ForeignKey(Stop, on_delete=models.CASCADE, related_name='finish_tickets')
 
     class Meta:
-        db_table = 'cargo'
+        db_table = 'ticket'

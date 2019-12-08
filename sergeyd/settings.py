@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'sergeyd.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'CargoDB',
+        'NAME': 'TransportDB',
         'HOST': 'DESKTOP-B00N9B3\TOROP_INST',
         'OPTIONS': {
             'driver': 'SQL Server Native Client 11.0',

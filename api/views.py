@@ -11,70 +11,47 @@ from rest_framework.response import Response
 RANGE = 100000
 T_RANGE = 90000
 
+TRANSPORT_NAMES = [
+    'bus', 'taxi', 'train', 'subway', 'ship', 'airplane'
+]
+
 
 class RecipeView(viewsets.ViewSet):
-    queryset = City.objects.all()
+    queryset = Stop.objects.all()
 
     @action(detail=False)
     def get(self, request, pk=None):
         faker = Faker()
 
-        cities = []
+        stops = []
         for i in range(80):
-            cities.append(City(name=faker.city(), population=random.randint(30000, 10000000)))
-            print(f'{i} -- City')
+            stops.append(Stop(country=faker.country(), city=faker.city()))
+            print(f'{i} -- Stop')
 
-        City.objects.bulk_create(cities)
+        Stop.objects.bulk_create(stops)
 
-        cars = []
+        transports = []
         for i in range(RANGE):
-            car_number = ''
-            for j in range(2):
-                car_number += random.choice(string.ascii_uppercase)
+            transports.append(Transport(transport_type=random.choice(TRANSPORT_NAMES), fuel=random.uniform(500, 5500),
+                                        year=random.randint(1990, 2019)))
+            print(f'{i} -- Transport')
 
-            car_number += '-'
-            for j in range(4):
-                car_number += str(random.randint(0, 9))
+        Transport.objects.bulk_create(transports)
 
-            cars.append(Car(number=car_number, carrying_capacity=random.uniform(500, 12000)))
-            print(f'{i} -- Car')
-
-        Car.objects.bulk_create(cars)
-
-        drivers = []
-        for i in range(RANGE):
-            drivers.append(Driver(first_name=faker.first_name(), last_name=faker.last_name(),
-                                  age=random.randint(18, 54), car_id=i + 1))
-            print(f'{i} -- Driver')
-
-        Driver.objects.bulk_create(drivers)
-
-        clients = []
-        for i in range(RANGE):
-            clients.append(Client(name=faker.name()))
-            print(f'{i} -- Client')
-
-        Client.objects.bulk_create(clients)
-
-        cargo_list = []
+        tickets = []
         counter = 0
         for i in range(T_RANGE):
-            object_id = i + 1
-
             counter = counter + 1
 
             if counter % 70 == 0:
                 counter = 1
 
-            order_date = faker.date_time_between(start_date="-30y", end_date="now", tzinfo=None)
-            letters_and_digits = string.ascii_letters + string.digits
-            cargo_name = ''.join(random.choice(letters_and_digits) for i in range(18))
+            order_date = faker.date_time_between(start_date="-10y", end_date="now", tzinfo=None)
 
-            cargo_list.append(Cargo(name=cargo_name, weight=random.uniform(5, 50), price=random.randint(1, 15),
-                                    date=order_date, client_id=object_id, car_id=object_id, start_city_id=counter,
-                                    finish_city_id=counter + 5))
-            print(f'{i} -- Cargo')
+            tickets.append(Ticket(seat=random.randint(1, 100), cost=random.uniform(1, 200), date=order_date,
+                                  start_stop_id=counter, finish_stop_id=counter + 5, transport_id=counter))
+            print(f'{i} -- Ticket')
 
-        Cargo.objects.bulk_create(cargo_list)
+        Ticket.objects.bulk_create(tickets)
 
         return Response(True)
