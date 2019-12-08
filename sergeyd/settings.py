@@ -25,7 +25,7 @@ SECRET_KEY = 'ua)@%76mmh5smdi8f3&4tnq9)#+pcu@)(v-(a*om#5%cf!w@9j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['157.230.117.28', '127.0.0.1', 'simple-recipes.net', 'www.simple-recipes.net']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'sergeyd.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'StudentsDB_small',
+        'NAME': 'CargoDB',
         'HOST': 'DESKTOP-B00N9B3\TOROP_INST',
         'OPTIONS': {
             'driver': 'SQL Server Native Client 11.0',
